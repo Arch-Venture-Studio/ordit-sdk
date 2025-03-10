@@ -1,49 +1,59 @@
-import { O as d, B as n } from "./index-evOerbxh.js";
-import { s as l, a as w, b as f } from "./index-BjHduQfZ.js";
+import { s as d, W as i, a as w, b as f } from "./index-Di_-HtFi.js";
+import { O as u, B as n } from "./index-evOerbxh.js";
 function t() {
   var e;
   if (typeof window > "u")
-    throw new d("Cannot call this function outside a browser");
+    throw new u("Cannot call this function outside a browser");
   return typeof ((e = window.XverseProviders) == null ? void 0 : e.BitcoinProvider) < "u";
 }
-async function i() {
+async function o() {
   if (!t())
     throw new n("Xverse not installed");
   return window.XverseProviders.BitcoinProvider;
 }
-async function v(e = "mainnet") {
+async function X(e = "mainnet") {
   if (!t())
     throw new n("Xverse not installed");
-  return l(i, e);
+  return d(
+    o,
+    i.XVERSE,
+    e
+  );
 }
 async function g(e, {
   finalize: r = !0,
   extractTx: s = !0,
-  network: o,
-  inputsToSign: a
+  network: a,
+  inputsToSign: l
 } = { network: "mainnet", inputsToSign: [] }) {
   if (!t())
     throw new n("Xverse not installed");
-  return w(i, e, {
-    finalize: r,
-    extractTx: s,
-    network: o,
-    inputsToSign: a
-  });
+  return w(
+    o,
+    e,
+    i.XVERSE,
+    {
+      finalize: r,
+      extractTx: s,
+      network: a,
+      inputsToSign: l
+    }
+  );
 }
-async function m(e, r, s = "mainnet") {
+async function E(e, r, s = "mainnet") {
   if (!t())
     throw new n("Xverse not installed");
   return f(
-    i,
+    o,
     e,
     r,
+    i.XVERSE,
     s
   );
 }
 export {
-  v as getAddresses,
+  X as getAddresses,
   t as isInstalled,
-  m as signMessage,
+  E as signMessage,
   g as signPsbt
 };

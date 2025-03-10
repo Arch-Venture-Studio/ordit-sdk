@@ -1,21 +1,21 @@
-import { getWallets as d } from "@wallet-standard/core";
-import { B as o } from "./BrowserWalletNetworkMismatchError-D_4WJV6I.js";
-import { O as f, B as a } from "./index-evOerbxh.js";
-import { s as u, a as g, b as w } from "./index-BjHduQfZ.js";
+import { getWallets as f } from "@wallet-standard/core";
+import { s as u, W as o, a as g, b as w } from "./index-Di_-HtFi.js";
+import { B as l } from "./BrowserWalletNetworkMismatchError-D_4WJV6I.js";
+import { O as m, B as a } from "./index-evOerbxh.js";
 async function r() {
-  const { get: t } = d(), n = t().find(
-    (e) => {
-      var i, c;
-      return e.name === "Magic Eden" && ((c = (i = e.features["sats-connect:"]) == null ? void 0 : i.provider) == null ? void 0 : c.isMagicEden) === !0;
+  const { get: t } = f(), e = t().find(
+    (n) => {
+      var i, d;
+      return n.name === "Magic Eden" && ((d = (i = n.features["sats-connect:"]) == null ? void 0 : i.provider) == null ? void 0 : d.isMagicEden) === !0;
     }
   );
-  if (!n)
+  if (!e)
     throw new a("Magic Eden Wallet not installed");
-  return n.features["sats-connect:"].provider;
+  return e.features["sats-connect:"].provider;
 }
-async function l() {
+async function c() {
   if (typeof window > "u")
-    throw new f("Cannot call this function outside a browser");
+    throw new m("Cannot call this function outside a browser");
   try {
     const t = await r();
     return t.isMagicEden !== void 0 && t.isMagicEden === !0;
@@ -25,51 +25,61 @@ async function l() {
     throw t;
   }
 }
-async function W(t = "mainnet") {
-  if (!l())
+async function h(t = "mainnet") {
+  if (!c())
     throw new a("Magic Eden Wallet not installed");
   if (t !== "mainnet")
-    throw new o(
+    throw new l(
       "Magic Eden Wallet only supports mainnet"
     );
-  return u(r, t);
+  return u(
+    r,
+    o.MAGICEDEN,
+    t
+  );
 }
-async function h(t, {
+async function y(t, {
   finalize: s = !0,
-  extractTx: n = !0,
-  network: e,
+  extractTx: e = !0,
+  network: n,
   inputsToSign: i
 } = { network: "mainnet", inputsToSign: [] }) {
-  if (!l())
-    throw new a("Magic Eden Wallet not installed");
-  if (e !== "mainnet")
-    throw new o(
-      "Magic Eden Wallet only supports mainnet"
-    );
-  return g(r, t, {
-    finalize: s,
-    extractTx: n,
-    network: e,
-    inputsToSign: i
-  });
-}
-async function y(t, s, n = "mainnet") {
-  if (!l())
+  if (!c())
     throw new a("Magic Eden Wallet not installed");
   if (n !== "mainnet")
-    throw new o(
+    throw new l(
+      "Magic Eden Wallet only supports mainnet"
+    );
+  return g(
+    r,
+    t,
+    o.MAGICEDEN,
+    {
+      finalize: s,
+      extractTx: e,
+      network: n,
+      inputsToSign: i
+    }
+  );
+}
+async function C(t, s, e = "mainnet") {
+  if (!c())
+    throw new a("Magic Eden Wallet not installed");
+  if (e !== "mainnet")
+    throw new l(
       "Magic Eden Wallet only supports mainnet"
     );
   return w(
     r,
     t,
     s,
-    n
+    o.MAGICEDEN,
+    e
   );
 }
 export {
-  W as getAddresses,
-  l as isInstalled,
-  y as signMessage,
-  h as signPsbt
+  h as getAddresses,
+  c as isInstalled,
+  C as signMessage,
+  y as signPsbt
 };
