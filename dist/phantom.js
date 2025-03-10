@@ -1,41 +1,41 @@
-import { O as n, g as m, b as l, a as f, B as u } from "./index-evOerbxh.js";
-import { Psbt as p } from "bitcoinjs-lib";
-import { B as g } from "./BrowserWalletNetworkMismatchError-D_4WJV6I.js";
-function b() {
+import { O as s, g as m, b as l, a as h, B as p } from "./index-evOerbxh.js";
+import { Psbt as g } from "bitcoinjs-lib";
+import { B as b } from "./BrowserWalletNetworkMismatchError-D_4WJV6I.js";
+function x() {
   if (typeof window > "u")
-    throw new n("Cannot call this function outside a browser");
+    throw new s("Cannot call this function outside a browser");
   return typeof window.phantom < "u";
 }
 function w(e = "mainnet") {
-  if (!b())
-    throw new u("Phantom Wallet not installed");
+  if (!x())
+    throw new p("Phantom Wallet not installed");
   if (e !== "mainnet")
-    throw new g(
+    throw new b(
       "Phantom Wallet only supports mainnet"
     );
 }
-async function E(e = "mainnet") {
+async function P(e = "mainnet") {
   w(e);
-  const s = await window.phantom.bitcoin.requestAccounts(), o = [], t = [];
-  if (s.forEach((r) => {
-    t.push(r.purpose);
-    const a = m(r.address, e);
-    if (r.purpose === "ordinals" && a !== "taproot")
-      throw new n("No taproot address found");
-    o.push({
-      publicKey: r.publicKey,
-      address: r.address,
+  const i = await window.phantom.bitcoin.requestAccounts(), r = [], t = [];
+  if (i.forEach((o) => {
+    t.push(o.purpose);
+    const a = m(o.address, e);
+    if (o.purpose === "ordinals" && a !== "taproot")
+      throw new s("No taproot address found");
+    r.push({
+      publicKey: o.publicKey,
+      address: o.address,
       format: a
     });
   }), !t.includes("ordinals"))
-    throw new n("No taproot address found");
-  return o;
+    throw new s("No taproot address found");
+  return r;
 }
-async function P(e, s, o = "mainnet") {
-  w(o);
+async function S(e, i, r = "mainnet") {
+  w(r);
   try {
     const { signature: t } = await window.phantom.bitcoin.signMessage(
-      s,
+      i,
       new TextEncoder().encode(e)
     );
     return {
@@ -43,53 +43,58 @@ async function P(e, s, o = "mainnet") {
       base64: l.from(t).toString("base64")
     };
   } catch (t) {
-    throw console.error("Sign message error", t), new n("Failed to sign message with Phantom Wallet");
+    throw console.error("Sign message error", t), new s("Failed to sign message with Phantom Wallet");
   }
 }
 async function F(e, {
-  finalize: s = !0,
-  extractTx: o = !0,
+  finalize: i = !0,
+  extractTx: r = !0,
   network: t,
-  inputsToSign: r
+  inputsToSign: o
 } = { network: "mainnet", inputsToSign: [] }) {
-  if (w(t), o && !s)
-    throw new f();
-  let a, i;
+  if (w(t), r && !i)
+    throw new h();
+  const a = [];
+  o.forEach((n) => {
+    const { signingIndexes: f } = n;
+    f.forEach(() => {
+      a.push(n);
+    });
+  });
+  let c, d;
   try {
-    a = await window.phantom.bitcoin.signPSBT(
+    c = await window.phantom.bitcoin.signPSBT(
       l.from(e.toHex(), "hex"),
       {
-        inputsToSign: r
+        inputsToSign: a
       }
-    ), i = p.fromBuffer(l.from(a));
+    ), d = g.fromBuffer(l.from(c));
   } catch {
-    throw new n("Failed to sign psbt with Phantom Wallet");
+    throw new s("Failed to sign psbt with Phantom Wallet");
   }
-  if (s && r.forEach((d) => {
-    d.signingIndexes.forEach((c) => {
-      try {
-        i.finalizeInput(c);
-      } catch (h) {
-        throw console.error("Sign psbt error", h), new n("Failed to finalize input");
-      }
-    });
-  }), o)
+  if (i && a.forEach((n, f) => {
+    try {
+      d.finalizeInput(f);
+    } catch (u) {
+      throw console.error("Sign psbt error", u), new s("Failed to finalize input");
+    }
+  }), r)
     try {
       return {
         base64: null,
-        hex: i.extractTransaction().toHex()
+        hex: d.extractTransaction().toHex()
       };
-    } catch (d) {
-      throw d instanceof Error && d.message === "Not finalized" ? new f() : new n("Failed to extract transaction from PSBT");
+    } catch (n) {
+      throw n instanceof Error && n.message === "Not finalized" ? new h() : new s("Failed to extract transaction from PSBT");
     }
   return {
-    hex: i.toHex(),
-    base64: i.toBase64()
+    hex: d.toHex(),
+    base64: d.toBase64()
   };
 }
 export {
-  E as getAddresses,
-  b as isInstalled,
-  P as signMessage,
+  P as getAddresses,
+  x as isInstalled,
+  S as signMessage,
   F as signPsbt
 };
