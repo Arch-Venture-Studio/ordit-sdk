@@ -6,3 +6,13 @@ export type BrowserWalletNetwork = Extract<
 >;
 
 export type Chain = "bitcoin" | "fractal-bitcoin";
+
+export enum Wallet {
+  UNISAT = "unisat",
+  XVERSE = "xverse",
+  MAGICEDEN = "magiceden",
+  LEATHER = "leather",
+  OKX = "okx",
+  PHANTOM = "phantom",
+  OYL = "oyl",
+}
