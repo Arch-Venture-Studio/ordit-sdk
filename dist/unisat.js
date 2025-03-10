@@ -8,7 +8,7 @@ const b = {
 }, I = {
   bitcoin: {
     mainnet: "BITCOIN_MAINNET",
-    testnet: "BITCOIN_TESTNET",
+    testnet: "BITCOIN_TESTNET4",
     signet: "BITCOIN_SIGNET"
   },
   "fractal-bitcoin": {
