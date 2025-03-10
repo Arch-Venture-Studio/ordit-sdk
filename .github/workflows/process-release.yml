@@ -99,4 +99,17 @@ jobs:
           git add package.json dist index.d.ts
           git commit -m "Release ${{ steps.get_version.outputs.version }} from ${{ steps.get_commit.outputs.hash }}"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git release
+      
+      - name: Delete existing tag and recreate it on release branch
+        run: |
+          # First move to release branch if not already there
+          git checkout release
+          
+          # Delete the tag locally and remotely
+          git tag -d ${{ steps.get_version.outputs.version }} || true
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git :refs/tags/${{ steps.get_version.outputs.version }} || true
+          
+          # Create the tag on the release branch
+          git tag ${{ steps.get_version.outputs.version }}
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git ${{ steps.get_version.outputs.version }}
           
