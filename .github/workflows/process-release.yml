@@ -75,9 +75,9 @@ jobs:
           # Create empty directory structure
           mkdir -p dist
           
-          # Copy built files from previous step
-          cp -r ../build/dist/* dist/ || cp -r ../build-and-release/dist/* dist/
-          cp ../build/package.json . || cp ../build-and-release/package.json .
+          # Copy built files from the correct location in the workspace
+          cp -r ../build/packages/sdk/dist/* dist/ || cp -r ../build-and-release/packages/sdk/dist/* dist/ || cp -r packages/sdk/dist/* dist/
+          cp ../build/packages/sdk/package.json . || cp -r ../build-and-release/packages/sdk/package.json . || cp packages/sdk/package.json .
           
           # Create index.d.ts file
           echo 'export * from "./dist/index";' > index.d.ts
