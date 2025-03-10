@@ -7,41 +7,61 @@ on:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
+          fetch-depth: 0 # Fetch all history for all branches
+      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '20'
+          # Explicitly remove the cache option that was causing the error
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: npm ci
-
+        run: pnpm install
+      
       - name: Get version from release tag
         id: get_version
         run: |
           # Use release tag as is, keeping the v prefix
           VERSION="${{ github.event.release.tag_name }}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
+      
       - name: Build project
-        run: npm run build
-
+        run: pnpm run build
+      
       - name: Get commit hash
         id: get_commit
         run: echo "hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
+      
       - name: Switch to release branch
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
+          
           if git ls-remote --heads origin release | grep release; then
             git checkout -b release origin/release
             git rm -rf .
@@ -49,21 +69,22 @@ jobs:
             git checkout --orphan release
             git rm -rf .
           fi
-
+      
       - name: Copy package.json, dist folder, and create index.d.ts
         run: |
           # Create empty directory structure
           mkdir -p dist
-
+          
           # Copy built files from previous step
           cp -r ../build/dist/* dist/ || cp -r ../build-and-release/dist/* dist/
           cp ../build/package.json . || cp ../build-and-release/package.json .
-
+          
           # Create index.d.ts file
           echo 'export * from "./dist/index";' > index.d.ts
-
+      
       - name: Commit and push release
         run: |
           git add package.json dist index.d.ts
           git commit -m "Release ${{ steps.get_version.outputs.version }} from ${{ steps.get_commit.outputs.hash }}"
           git push origin release
+          
