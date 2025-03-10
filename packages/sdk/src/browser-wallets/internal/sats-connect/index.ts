@@ -15,7 +15,7 @@ import {
 } from "sats-connect";
 
 import { getAddressFormat } from "../../../addresses";
-import type { BrowserWalletNetwork } from "../../../config/types";
+import type { BrowserWalletNetwork, Wallet } from "../../../config/types";
 import {
   BrowserWalletExtractTxFromNonFinalizedPsbtError,
   BrowserWalletRequestCancelledByUserError,
@@ -23,7 +23,7 @@ import {
   OrditSDKError,
 } from "../../../errors";
 import type { BrowserWalletSignResponse, WalletAddress } from "../../types";
-import { NETWORK_TO_BITCOIN_NETWORK_TYPE } from "./constants";
+import { getBitcoinNetworkType } from "./constants";
 import type { SatsConnectSignPSBTOptions } from "./types";
 import { fromXOnlyToFullPubkey } from "./utils";
 
@@ -36,6 +36,7 @@ initEccLib(ecc);
  * Gets addresses from the browser wallet.
  *
  * @param network Network
+ * @param wallet Wallet
  * @returns An array of WalletAddress objects.
  * @throws {BrowserWalletNotInstalledError} Wallet is not installed
  * @throws {BrowserWalletSigningError} Failed to sign with Selected Wallet
@@ -43,6 +44,7 @@ initEccLib(ecc);
  */
 async function satsConnectWalletGetAddresses(
   getProvider: () => Promise<BitcoinProvider>,
+  wallet: Wallet,
   network: BrowserWalletNetwork = "mainnet",
 ): Promise<WalletAddress[]> {
   const result: WalletAddress[] = [];
@@ -80,7 +82,7 @@ async function satsConnectWalletGetAddresses(
       purposes: ["ordinals", "payment"] as AddressPurpose[],
       message: "Provide access to Payment address and Ordinals address",
       network: {
-        type: NETWORK_TO_BITCOIN_NETWORK_TYPE[network],
+        type: getBitcoinNetworkType(network, wallet),
       },
     },
     getProvider,
@@ -98,6 +100,7 @@ async function satsConnectWalletGetAddresses(
  * To learn more, visit https://github.com/bitcoin/bitcoin/blob/master/doc/psbt.md
  *
  * @param psbt Partially Signed Bitcoin Transaction
+ * @param wallet Wallet
  * @param options Options for signing
  * @returns An object containing `base64` and `hex` if the transaction is not extracted, or `hex` if the transaction is extracted.
  * @throws {BrowserWalletNotInstalledError} Wallet is not installed
@@ -109,6 +112,7 @@ async function satsConnectWalletGetAddresses(
 async function satsConnectWalletSignPsbt(
   getProvider: () => Promise<BitcoinProvider>,
   psbt: Psbt,
+  wallet: Wallet,
   {
     finalize = true,
     extractTx = true,
@@ -175,7 +179,7 @@ async function satsConnectWalletSignPsbt(
   const options: SignTransactionOptions = {
     payload: {
       network: {
-        type: NETWORK_TO_BITCOIN_NETWORK_TYPE[network],
+        type: getBitcoinNetworkType(network, wallet),
       },
       message: "Sign PSBT",
       psbtBase64: psbt.toBase64(),
@@ -200,6 +204,7 @@ async function satsConnectWalletSignPsbt(
  *
  * @param message Message to be signed
  * @param address Address to sign with
+ * @param wallet Wallet
  * @param network Network (mainnet, testnet, signet)
  * @returns An object containing `base64` and `hex`.
  * @throws {BrowserWalletNotInstalledError} Wallet is not installed
@@ -211,6 +216,7 @@ async function satsConnectWalletSignMessage(
   getProvider: () => Promise<BitcoinProvider>,
   message: string,
   address: string,
+  wallet: Wallet,
   network: BrowserWalletNetwork = "mainnet",
 ): Promise<BrowserWalletSignResponse> {
   if (!message || !network || !address) {
@@ -238,7 +244,7 @@ async function satsConnectWalletSignMessage(
   const options: SatsConnectSignMessageOptions = {
     payload: {
       network: {
-        type: NETWORK_TO_BITCOIN_NETWORK_TYPE[network],
+        type: getBitcoinNetworkType(network, wallet),
       },
       message,
       address,

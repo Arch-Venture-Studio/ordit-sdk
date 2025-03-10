@@ -1,7 +1,7 @@
 import { Psbt } from "bitcoinjs-lib";
 import { BitcoinProvider } from "sats-connect";
 
-import { BrowserWalletNetwork } from "../../config/types";
+import { BrowserWalletNetwork, Wallet } from "../../config/types";
 import { BrowserWalletNotInstalledError, OrditSDKError } from "../../errors";
 import {
   satsConnectWalletGetAddresses,
@@ -40,7 +40,11 @@ async function getAddresses(
     throw new BrowserWalletNotInstalledError("Xverse not installed");
   }
 
-  return satsConnectWalletGetAddresses(getXverseWalletProvider, network);
+  return satsConnectWalletGetAddresses(
+    getXverseWalletProvider,
+    Wallet.XVERSE,
+    network,
+  );
 }
 
 async function signPsbt(
@@ -56,12 +60,17 @@ async function signPsbt(
     throw new BrowserWalletNotInstalledError("Xverse not installed");
   }
 
-  return satsConnectWalletSignPsbt(getXverseWalletProvider, psbt, {
-    finalize,
-    extractTx,
-    network,
-    inputsToSign,
-  });
+  return satsConnectWalletSignPsbt(
+    getXverseWalletProvider,
+    psbt,
+    Wallet.XVERSE,
+    {
+      finalize,
+      extractTx,
+      network,
+      inputsToSign,
+    },
+  );
 }
 
 async function signMessage(
@@ -77,6 +86,7 @@ async function signMessage(
     getXverseWalletProvider,
     message,
     address,
+    Wallet.XVERSE,
     network,
   );
 }

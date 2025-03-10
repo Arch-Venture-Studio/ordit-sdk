@@ -2,7 +2,7 @@ import { getWallets, Wallet } from "@wallet-standard/core";
 import { Psbt } from "bitcoinjs-lib";
 import { BitcoinProvider } from "sats-connect";
 
-import { BrowserWalletNetwork } from "../../config/types";
+import { BrowserWalletNetwork, Wallet as WalletType } from "../../config/types";
 import {
   BrowserWalletNetworkMismatchError,
   BrowserWalletNotInstalledError,
@@ -85,7 +85,11 @@ async function getAddresses(
     );
   }
 
-  return satsConnectWalletGetAddresses(getMagicEdenWalletProvider, network);
+  return satsConnectWalletGetAddresses(
+    getMagicEdenWalletProvider,
+    WalletType.MAGICEDEN,
+    network,
+  );
 }
 
 async function signPsbt(
@@ -107,12 +111,17 @@ async function signPsbt(
     );
   }
 
-  return satsConnectWalletSignPsbt(getMagicEdenWalletProvider, psbt, {
-    finalize,
-    extractTx,
-    network,
-    inputsToSign,
-  });
+  return satsConnectWalletSignPsbt(
+    getMagicEdenWalletProvider,
+    psbt,
+    WalletType.MAGICEDEN,
+    {
+      finalize,
+      extractTx,
+      network,
+      inputsToSign,
+    },
+  );
 }
 
 async function signMessage(
@@ -134,6 +143,7 @@ async function signMessage(
     getMagicEdenWalletProvider,
     message,
     address,
+    WalletType.MAGICEDEN,
     network,
   );
 }
