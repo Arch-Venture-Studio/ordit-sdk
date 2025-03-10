@@ -1,0 +1,123 @@
+export declare const INSCRIPTIONS: {
+    _id: string;
+    id: string;
+    creator: string;
+    owner: string;
+    sat: number;
+    mimeType: string;
+    mimeSubtype: string;
+    mediaType: string;
+    mediaCharset: string;
+    mediaSize: number;
+    mediaContent: string;
+    timestamp: number;
+    height: number;
+    fee: number;
+    genesis: string;
+    number: number;
+    outpoint: string;
+    meta: {
+        p: string;
+        v: number;
+        ty: string;
+        col: string;
+        iid: string;
+        publ: string;
+        nonce: number;
+        sig: string;
+    };
+    verified: boolean;
+}[];
+export declare const INSCRIPTIONS_ENCODED_META: {
+    meta: {
+        iid: string;
+        p: string;
+        v: number;
+        ty: string;
+        col: string;
+        publ: string;
+        nonce: number;
+        sig: string;
+    };
+    _id: string;
+    id: string;
+    creator: string;
+    owner: string;
+    sat: number;
+    mimeType: string;
+    mimeSubtype: string;
+    mediaType: string;
+    mediaCharset: string;
+    mediaSize: number;
+    mediaContent: string;
+    timestamp: number;
+    height: number;
+    fee: number;
+    genesis: string;
+    number: number;
+    outpoint: string;
+    verified: boolean;
+}[];
+export declare const UNSPENT_UTXOS: {
+    txid: string;
+    n: number;
+    sats: number;
+    scriptPubKey: {
+        asm: string;
+        desc: string;
+        hex: string;
+        address: string;
+        type: string;
+    };
+    ordinals: {
+        number: number;
+        decimal: string;
+        degree: string;
+        name: string;
+        height: number;
+        cycle: number;
+        epoch: number;
+        period: number;
+        offset: number;
+        rarity: string;
+        output: string;
+        start: number;
+        end: number;
+        size: number;
+    }[];
+    inscriptions: never[];
+    safeToSpend: boolean;
+    confirmation: number;
+}[];
+export declare const UNSPENT_UTXOS_WITH_UNSAFE_TO_SPEND: {
+    txid: string;
+    n: number;
+    sats: number;
+    scriptPubKey: {
+        asm: string;
+        desc: string;
+        hex: string;
+        address: string;
+        type: string;
+    };
+    ordinals: {
+        number: number;
+        decimal: string;
+        degree: string;
+        name: string;
+        height: number;
+        cycle: number;
+        epoch: number;
+        period: number;
+        offset: number;
+        rarity: string;
+        output: string;
+        start: number;
+        end: number;
+        size: number;
+    }[];
+    inscriptions: never[];
+    safeToSpend: boolean;
+    confirmation: number;
+}[];
+//# sourceMappingURL=DataSourceUtility.fixture.d.ts.map

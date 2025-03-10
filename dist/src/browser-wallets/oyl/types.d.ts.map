@@ -1,0 +1,1 @@
+{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../../../src/browser-wallets/oyl/types.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,oBAAoB,CAAC;AAE1D,MAAM,MAAM,kBAAkB,GAAG;IAC/B,QAAQ,CAAC,EAAE,OAAO,CAAC;IACnB,SAAS,CAAC,EAAE,OAAO,CAAC;IACpB,OAAO,EAAE,oBAAoB,CAAC;CAC/B,CAAC"}

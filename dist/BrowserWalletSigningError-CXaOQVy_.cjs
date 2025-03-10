@@ -1,0 +1,1 @@
+"use strict";class s extends Error{constructor(r="Request canceled by user."){super(r),this.name="BrowserWalletRequestCancelledByUserError"}}class l extends Error{constructor(r){super(r),this.name="BrowserWalletSigningError"}}exports.BrowserWalletRequestCancelledByUserError=s;exports.BrowserWalletSigningError=l;
