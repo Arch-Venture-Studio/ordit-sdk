@@ -97,7 +97,7 @@ jobs:
       - name: Commit and push release
         run: |
           git add package.json dist index.d.ts
-          git commit -m "Release ${{ steps.get_version.outputs.version }} from ${{ steps.get_commit.outputs.hash }}"
+          git commit -m "Release ${{ steps.get_version.outputs.version }} from ${{ steps.get_commit.outputs.hash }}" --allow-empty
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git release
       
       - name: Delete existing tag and recreate it on release branch
