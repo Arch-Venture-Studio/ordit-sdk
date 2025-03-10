@@ -18,7 +18,7 @@ export const CHAIN_TO_UNISAT_CHAIN: Record<
 > = {
   bitcoin: {
     mainnet: "BITCOIN_MAINNET",
-    testnet: "BITCOIN_TESTNET",
+    testnet: "BITCOIN_TESTNET4",
     signet: "BITCOIN_SIGNET",
   },
   "fractal-bitcoin": {
