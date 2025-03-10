@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -68,8 +71,8 @@ jobs:
       
       - name: Switch to release branch
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
           if git ls-remote --heads origin release | grep release; then
             git checkout -b release origin/release
@@ -95,5 +98,5 @@ jobs:
         run: |
           git add package.json dist index.d.ts
           git commit -m "Release ${{ steps.get_version.outputs.version }} from ${{ steps.get_commit.outputs.hash }}"
-          git push origin release
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git release
           
